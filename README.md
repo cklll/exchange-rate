@@ -33,9 +33,11 @@ https://blog.cloudboost.io/creating-your-first-mern-stack-application-b6604d12e4
 
 #### Production Deployment
 
-#### Live Demo
+## Live Demo
 I am using a free heroku hosting so it may take a while to load for the first time!
 
+## Resources
+https://www.flag-sprites.com/
 
 This project was bootstrapped with [Create React App](https://github.com/facebookincubator/create-react-app).
 

@@ -11,9 +11,12 @@ class Converter extends Component {
             toCurrency: "USD",
             fromAmount: 1,
             rate: 7.8,
+            isLoadingRate: true,
+            isLoadingHistory: true,
         };
 
         this.handleFromAmountChange = this.handleFromAmountChange.bind(this);
+        this.swapCurrency = this.swapCurrency.bind(this);
     }
     
     handleFromAmountChange(event) {
@@ -23,11 +26,21 @@ class Converter extends Component {
         })
     }
 
+    swapCurrency(event) {
+        this.setState({
+            isLoadingRate: false,
+        })
+    }
+
     isNumeric(number) {
         return !isNaN(parseFloat(number)) && isFinite(number);
     }
 
     render() {
+        let toValue = 'Loading...';
+        if (!this.state.isLoadingRate) {
+            toValue = this.state.rate * this.state.fromAmount;
+        }
         return (
             <div className="converter container">
                 <form>
@@ -43,11 +56,15 @@ class Converter extends Component {
                             </Col>
                             <Col xs={2}>
                                 <DropdownButton
-                                    bsStyle='secondary'
+                                    bsStyle='info'
                                     title='Select'
                                     id='fromDropwdown'>
-                                    <MenuItem eventKey="HKD">HKD</MenuItem>
-                                    <MenuItem eventKey="USD">USD</MenuItem>
+                                    <MenuItem eventKey="HKD">
+                                        <img src="../assets/blank.gif" className="flag flag-hk" alt="Hong Kong" />HKD
+                                    </MenuItem>
+                                    <MenuItem eventKey="USD">
+                                        <img src="../assets/blank.gif" className="flag flag-us" alt="Hong Kong" />USD
+                                    </MenuItem>
                                 </DropdownButton>
                             </Col>
                         </Row>
@@ -55,21 +72,25 @@ class Converter extends Component {
 
                             <Col xs={4} xsOffset={3} className="equal-to">
                                 <span>Equals to...</span>
-                                <button className="btn btn-secondary">Swap</button>
+                                <button type="button" className="btn btn-secondary" onClick={this.swapCurrency}>Swap</button>
                             </Col>
                         </Row>
                         <Row>
                             <Col xs={4} xsOffset={3}>
                                 <input type="text" readOnly  className="form-control"
-                                        value={this.state.rate * this.state.fromAmount} />
+                                        value={toValue} />
                             </Col>
                             <Col xs={2}>
                                 <DropdownButton
-                                    bsStyle='secondary'
+                                    bsStyle='info'
                                     title='Select'
                                     id='toDropwdown'>
-                                    <MenuItem eventKey="HKD">HKD</MenuItem>
-                                    <MenuItem eventKey="USD">USD</MenuItem>
+                                    <MenuItem eventKey="HKD">
+                                        <img src="../assets/blank.gif" className="flag flag-hk" alt="Hong Kong" />HKD
+                                    </MenuItem>
+                                    <MenuItem eventKey="USD">
+                                        <img src="../assets/blank.gif" className="flag flag-us" alt="Hong Kong" />USD
+                                    </MenuItem>
                                 </DropdownButton>
                             </Col>
                         </Row>
