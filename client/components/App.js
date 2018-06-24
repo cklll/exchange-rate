@@ -1,19 +1,17 @@
 import React, { Component } from 'react';
+
 import '../css/App.css';
+import Header from './Header';
+import Converter from './Converter';
 
 class App extends Component {
   render() {
     return (
       <div className="App">
-        <header>
-          <p>header</p>
-        </header>
+        <Header />
         <div className="MainContainer">
-          <p>main23</p>
+          <Converter />
         </div>
-        <footer>
-          <p>footer</p>
-          </footer>
       </div>
     );
   }
