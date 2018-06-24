@@ -20,7 +20,7 @@
   },
   "scripts": {
     "webpack": "webpack",
-    "start": "webpack --watch && nodemon --exec babel-node -- bin/www",
+    "start": "webpack --watch | nodemon --exec babel-node -- bin/www",
     "build": "react-scripts build",
     "test": "react-scripts test --env=jsdom",
     "eject": "react-scripts eject"
