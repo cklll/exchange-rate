@@ -28496,7 +28496,7 @@ exports = module.exports = __webpack_require__(150)(undefined);
 
 
 // module
-exports.push([module.i, "html, body {\r\n    min-width:320px;\r\n}\r\n\r\n/* non-collapsing navbar\r\nhttps://stackoverflow.com/questions/23535289/bootstrap-3-disable-navbar-collapse */\r\n.navbar-collapse.collapse {\r\n  display: block!important;\r\n}\r\n.navbar-nav>li, .navbar-nav {\r\n  float: left !important;\r\n}\r\n.navbar-nav.navbar-right:last-child {\r\n  margin-right: -15px !important;\r\n}\r\n.navbar-right {\r\n  float: right!important;\r\n}\r\n.navbar-right {\r\n    /* margin-top:5px;\r\n    margin-bottom:5px; */\r\n}\r\n\r\n.converter {\r\n    display: flex;\r\n    min-height: 80vh;\r\n    justify-content: center;\r\n    flex-direction: column;\r\n    text-align: left;\r\n}\r\n.converter .error {\r\n    color: #a94442;\r\n    font-style: italic;\r\n    opacity: 0;\r\n}\r\n.converter .error.show {\r\n    opacity: 1;\r\n}\r\n.converter .equal-to {\r\n    text-align: center;\r\n    margin-top: 10vh;\r\n    margin-bottom: 10vh;\r\n}", ""]);
+exports.push([module.i, "html, body {\r\n    min-width:320px;\r\n}\r\n\r\n/* non-collapsing navbar\r\nhttps://stackoverflow.com/questions/23535289/bootstrap-3-disable-navbar-collapse */\r\n.navbar-collapse.collapse {\r\n  display: block!important;\r\n}\r\n.navbar-nav>li, .navbar-nav {\r\n  float: left !important;\r\n}\r\n.navbar-nav.navbar-right:last-child {\r\n  margin-right: -15px !important;\r\n}\r\n.navbar-right {\r\n  float: right!important;\r\n}\r\n.navbar-right {\r\n    /* margin-top:5px;\r\n    margin-bottom:5px; */\r\n}\r\n\r\n.converter {\r\n    display: flex;\r\n    min-height: 80vh;\r\n    justify-content: center;\r\n    flex-direction: column;\r\n    text-align: left;\r\n}\r\n.converter .error {\r\n    color: #a94442;\r\n    font-style: italic;\r\n    opacity: 0;\r\n}\r\n.converter .error.show {\r\n    opacity: 1;\r\n}\r\n.converter .equal-to {\r\n    text-align: center;\r\n    margin-top: 10vh;\r\n    margin-bottom: 10vh;\r\n}\r\n\r\n.flag {\r\n    display: inline-block;\r\n    width: 48px;\r\n    height: 48px;\r\n    background: url('../assets/flags.png') no-repeat;\r\n}\r\n\r\n\r\n.flag.flag-us {\r\n    background-position: -48px -48px;\r\n}\r\n\r\n.flag.flag-gb {\r\n    background-position: -48px 0;\r\n}\r\n\r\n.flag.flag-hk {\r\n    background-position: 0 -48px;\r\n}\r\n\r\n.flag.flag-eu {\r\n    background-position: 0 0;\r\n}\r\n", ""]);
 
 // exports
 
@@ -29221,17 +29221,19 @@ var Converter = function (_Component) {
                                 _react2.default.createElement(
                                     _reactBootstrap.DropdownButton,
                                     {
-                                        bsStyle: 'secondary',
+                                        bsStyle: 'info',
                                         title: 'Select',
                                         id: 'fromDropwdown' },
                                     _react2.default.createElement(
                                         _reactBootstrap.MenuItem,
                                         { eventKey: 'HKD' },
+                                        _react2.default.createElement('img', { src: '../assets/blank.gif', className: 'flag flag-hk', alt: 'HKD' }),
                                         'HKD'
                                     ),
                                     _react2.default.createElement(
                                         _reactBootstrap.MenuItem,
-                                        { eventKey: 'USD' },
+                                        { eventKey: 'HKD' },
+                                        _react2.default.createElement('img', { src: '../assets/blank.gif', className: 'flag flag-us', alt: 'USD' }),
                                         'USD'
                                     )
                                 )
@@ -29270,17 +29272,19 @@ var Converter = function (_Component) {
                                 _react2.default.createElement(
                                     _reactBootstrap.DropdownButton,
                                     {
-                                        bsStyle: 'secondary',
+                                        bsStyle: 'info',
                                         title: 'Select',
                                         id: 'toDropwdown' },
                                     _react2.default.createElement(
                                         _reactBootstrap.MenuItem,
                                         { eventKey: 'HKD' },
+                                        _react2.default.createElement('img', { src: '../assets/blank.gif', className: 'flag flag-hk', alt: 'HKD' }),
                                         'HKD'
                                     ),
                                     _react2.default.createElement(
                                         _reactBootstrap.MenuItem,
-                                        { eventKey: 'USD' },
+                                        { eventKey: 'HKD' },
+                                        _react2.default.createElement('img', { src: '../assets/blank.gif', className: 'flag flag-us', alt: 'USD' }),
                                         'USD'
                                     )
                                 )

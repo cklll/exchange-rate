@@ -43,11 +43,17 @@ class Converter extends Component {
                             </Col>
                             <Col xs={2}>
                                 <DropdownButton
-                                    bsStyle='secondary'
+                                    bsStyle='info'
                                     title='Select'
                                     id='fromDropwdown'>
-                                    <MenuItem eventKey="HKD">HKD</MenuItem>
-                                    <MenuItem eventKey="USD">USD</MenuItem>
+                                    <MenuItem eventKey="HKD">
+                                        <img src="../assets/blank.gif" className="flag flag-hk" alt="HKD" />
+                                        HKD
+                                    </MenuItem>
+                                    <MenuItem eventKey="HKD">
+                                        <img src="../assets/blank.gif" className="flag flag-us" alt="USD" />
+                                        USD
+                                    </MenuItem>
                                 </DropdownButton>
                             </Col>
                         </Row>
@@ -65,11 +71,17 @@ class Converter extends Component {
                             </Col>
                             <Col xs={2}>
                                 <DropdownButton
-                                    bsStyle='secondary'
+                                    bsStyle='info'
                                     title='Select'
                                     id='toDropwdown'>
-                                    <MenuItem eventKey="HKD">HKD</MenuItem>
-                                    <MenuItem eventKey="USD">USD</MenuItem>
+                                    <MenuItem eventKey="HKD">
+                                        <img src="../assets/blank.gif" className="flag flag-hk" alt="HKD" />
+                                        HKD
+                                    </MenuItem>
+                                    <MenuItem eventKey="HKD">
+                                        <img src="../assets/blank.gif" className="flag flag-us" alt="USD" />
+                                        USD
+                                    </MenuItem>
                                 </DropdownButton>
                             </Col>
                         </Row>
