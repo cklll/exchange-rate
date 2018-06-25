@@ -43,12 +43,7 @@ https://stackoverflow.com/questions/23535289/bootstrap-3-disable-navbar-collapse
     margin-bottom: 10vh;
 }
 
-.flag {
-    display: inline-block;
-    width: 48px;
-    height: 48px;
-    background: url('../assets/flags.png') no-repeat;
-}
+.flag {display: inline-block;width: 48px;height: 48px;background:url(../assets/flags.png);}
 .flag.flag-us {
     background-position: -48px -48px;
 }

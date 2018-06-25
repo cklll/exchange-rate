@@ -34,7 +34,7 @@ https://blog.cloudboost.io/creating-your-first-mern-stack-application-b6604d12e4
 ```
 git clone https://github.com/cklll/exchange-rate.git
 cd exchange-rate
-npm run
+npm start
 ```
 
 #### Test Application
