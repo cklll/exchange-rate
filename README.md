@@ -34,6 +34,10 @@ https://blog.cloudboost.io/creating-your-first-mern-stack-application-b6604d12e4
 ```
 git clone https://github.com/cklll/exchange-rate.git
 cd exchange-rate
+```
+Copy `example.env` to `.env` and modify the values in the file
+```
+npm install
 npm start
 ```
 
@@ -42,6 +46,10 @@ npm start
 
 #### Production Deployment
 ``` TODO ```
+Set up environment variable in Heroku
+heroku config:set OXR_APP_ID=YOUR_OXR_APP_ID
+
+
 
 ## Live Demo
 I am using a free heroku hosting so it may take a while to load for the first time!

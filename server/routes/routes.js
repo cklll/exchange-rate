@@ -1,9 +1,13 @@
-const config = require('../../config');
+
+
 const express = require('express');
 const router = express.Router();
 const oxr = require('open-exchange-rates');
 
-oxr.set({ app_id: config.oxrKey })
+if (process.env.NODE_ENV !== 'production') {
+  require('dotenv').load();
+}
+oxr.set({ app_id: process.env.OXR_APP_ID })
 
 let cached_rates_info = {}
 let nextUpdateTimestamp = Date.now();  // initialize next current timestamp to current time
@@ -22,6 +26,7 @@ const getOXRData = async () => {
     base: oxr.base,
     timestamp: oxr.timestamp,
   }
+  // update every hour
   nextUpdateTimestamp = oxr.timestamp + 3600000;
 }
 
