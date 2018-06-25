@@ -1,8 +1,9 @@
+const config = require('../../config');
 const express = require('express');
 const router = express.Router();
-
 const oxr = require('open-exchange-rates');
-oxr.set({ app_id: '1e537562f00543419433fec9b58c6aa1' })
+
+oxr.set({ app_id: config.oxrKey })
 
 let cached_rates_info = {}
 let nextUpdateTimestamp = Date.now();  // initialize next current timestamp to current time
@@ -55,6 +56,8 @@ router.get('/api/history', async (req, res) => {
       error: "currency not available"
     }, 404);
   }
+
+  // get all from db
 
   return res.send("OK");
   
