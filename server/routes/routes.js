@@ -1,15 +1,16 @@
-
-
 const express = require('express');
 const router = express.Router();
 const oxr = require('open-exchange-rates');
+const mongoose = require('mongoose');
+const historySchema = require('../../models/RateHistory');
 
 if (process.env.NODE_ENV !== 'production') {
   require('dotenv').load();
 }
-oxr.set({ app_id: process.env.OXR_APP_ID })
+console.log(process.env.OXR_APP_ID)
+oxr.set({ app_id: process.env.OXR_APP_ID });
 
-let cached_rates_info = {}
+let cached_rates_info = {};
 let nextUpdateTimestamp = Date.now();  // initialize next current timestamp to current time
 
 const availableCurrencies = ['HKD', 'USD', 'GBP', 'EUR'];
@@ -26,8 +27,33 @@ const getOXRData = async () => {
     base: oxr.base,
     timestamp: oxr.timestamp,
   }
+  
   // update every hour
   nextUpdateTimestamp = oxr.timestamp + 3600000;
+}
+
+const getHistoricalAsync = async (startDate, endDate, currency) => {
+  // TODO check db first
+
+  // new, scoped oxr object => make sure concurrent request won't affect oxr (latest)
+  const oxrHistory = require('open-exchange-rates');
+  oxrHistory.set({ app_id: process.env.OXR_APP_ID });
+
+  const result = {};
+  while (startDate <= endDate) {
+    const dateString = startDate.toISOString().split('T')[0]; //YYYY-MM-DD 
+    // TODO rewrite to promise.all
+    await new Promise(resolve => {
+      oxrHistory.historical(dateString, () => resolve());
+    });
+
+    result[oxrHistory.timestamp] = oxrHistory.rates[currency];
+    startDate.setDate(startDate.getDate() + 1);
+  }
+
+  // TODO save all to db
+
+  return result;
 }
 
 getOXRData();
@@ -38,35 +64,50 @@ router.get('/', (req, res) => {
 
 // get all rates
 router.get('/api/rates', async (req, res) => {
-  if (nextUpdateTimestamp >  Date.now()) {
+  if (nextUpdateTimestamp >  Date.now() || 
+      (Object.keys(cached_rates_info).length === 0 && cached_rates_info.constructor === Object)) {
     await getOXRData();
   }
   res.send(cached_rates_info);  
 });
 
 // get historic data
-// e.g. /api/history/currency=USD
+// e.g. /api/history/from=USD&to=HKD
 router.get('/api/history', async (req, res) => {  
-  let currency = req.query.currency;
+  let from = req.query.from;
+  let to = req.query.to;
 
-  if (currency === null || currency === undefined) {
-    return res.send({
+  if (from === null || from === undefined || to === undefined || to === undefined) {
+    return res.status(400).send({
       error: "currency not specified"
-    }, 400);
+    });
   } 
   
-  currency = currency.toUpperCase();
-  if (availableCurrencies.indexOf(currency) === -1) { // not found
-    return res.send({
+  from = from.toUpperCase();
+  to = to.toUpperCase();
+  if (availableCurrencies.indexOf(from) === -1 || availableCurrencies.indexOf(to) === -1) { // not found
+    return res.status(404).send({
       error: "currency not available"
-    }, 404);
+    });
   }
 
-  // get all from db
+  const startDate = new Date();
+  const endDate = new Date();
 
-  return res.send("OK");
+  endDate.setDate(startDate.getDate() - 1);
+  startDate.setDate(startDate.getDate() - 3);
   
+  const rates = {}
+  rates[from] = await getHistoricalAsync(new Date(startDate), new Date(endDate), from)
+  rates[to] = await getHistoricalAsync(new Date(startDate), new Date(endDate), to)
+
+  return res.send({
+    rates: rates,
+    base:"USD",
+  });
 });
+
+
 
 router.get('*', function(req, res){
   res.send({
