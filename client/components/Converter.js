@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import { DropdownButton, MenuItem, Grid, Row, Col } from 'react-bootstrap';
+const fx = require('money');
 
 
 class Converter extends Component {
@@ -9,71 +10,67 @@ class Converter extends Component {
         this.state = {
             fromCurrency: "HKD",
             toCurrency: "USD",
-            amount: 1,
-            rate: 7.8,
-
-            currencies: {
-                USD: {
-                    flag: 'us',
-                    rateToUSD: 1, 
-                }, 
-                HKD: {
-                    flag: 'hk',
-                    rateToUSD: 7.8, /* 7.8HKD = 1USD */
-                }, 
-                EUR: {
-                    flag: 'eu',
-                    rateToUSD: 0.86,
-                }, 
-                GBP: {
-                    flag: 'gb',
-                    rateToUSD: 0.75,
-                }, 
-            }
+            targetAmount: 0,
         };
+        this.flags = {
+            USD: 'us',
+            HKD: 'hk',
+            EUR: 'eu',
+            GBP: 'gb',
+        }
+        this.rates = {
+            EUR : 0.745101, // eg. 1 USD === 0.745101 EUR
+            GBP : 0.647710, // etc...
+            HKD : 7.781919,
+            USD : 1, 
+        }
+        this.fromAmountRef = React.createRef();
 
-        this.handleamountChange = this.handleamountChange.bind(this);
+        this.handleUpdate = this.handleUpdate.bind(this);
         this.handleFromCurrencyChange = this.handleFromCurrencyChange.bind(this);
         this.handleToCurrencyChange = this.handleToCurrencyChange.bind(this);
-        this.updateRate = this.updateRate.bind(this);
         this.swapCurrency = this.swapCurrency.bind(this);
+        
+        fx.rates = this.rates
+        fx.base = "USD";
     }
 
     componentDidMount() {
-        this.updateRate();
+        this.handleUpdate();
     }
 
     swapCurrency() {
         this.setState({
             toCurrency: this.state.fromCurrency,
             fromCurrency: this.state.toCurrency,
-        }, () => this.updateRate());
+        }, () => this.handleUpdate());
     }
 
-    updateRate() {
-        // currency1 => USD => currency2
-        this.setState({
-            rate: 1 / this.state.currencies[this.state.fromCurrency]['rateToUSD'] * this.state.currencies[this.state.toCurrency]['rateToUSD'],
-        })
-    }
-    
-    handleamountChange(event) {
-        const value = event.target.value;
-        this.setState({
-            amount: value,
-        })
+    handleUpdate() {
+        if (this.isNumeric(this.fromAmountRef.current.value)) {
+            const targetAmount = fx.convert(parseFloat(this.fromAmountRef.current.value), {
+                from: this.state.fromCurrency, 
+                to: this.state.toCurrency
+            });
+            this.setState({
+                targetAmount: targetAmount,
+            })
+        } else {
+            this.setState({
+                targetAmount: 0,
+            })
+        }
     }
 
     handleFromCurrencyChange(currency) {
-        console.log(currency);
         this.setState({
             fromCurrency: currency
-        }, () => this.updateRate());
+        }, () => this.handleUpdate());
     }
     handleToCurrencyChange(currency) {
         this.setState({
             toCurrency: currency
-        }, () => this.updateRate());
+        }, () => this.handleUpdate());
     }
 
     isNumeric(number) {
@@ -82,8 +79,8 @@ class Converter extends Component {
 
     render() {
 
-        const fromDropdownItems = Object.keys(this.state.currencies).map((currency, index) => {
-            const flag = this.state.currencies[currency]['flag'];
+        const fromDropdownItems = Object.keys(this.rates).map((currency, index) => {
+            const flag = this.flags[currency];
             return (
                 <MenuItem key={currency} eventKey={currency}
                     onSelect={this.handleFromCurrencyChange}>
@@ -92,8 +89,8 @@ class Converter extends Component {
                 </MenuItem>
             )
         });
-        const toDropdownItems = Object.keys(this.state.currencies).map((currency, index) => {
-            const flag = this.state.currencies[currency]['flag'];
+        const toDropdownItems = Object.keys(this.rates).map((currency, index) => {
+            const flag = this.flags[currency];
             return (
                 <MenuItem key={currency} eventKey={currency}
                 onSelect={this.handleToCurrencyChange}>
@@ -103,8 +100,10 @@ class Converter extends Component {
             )
         });
 
-        const toFlag = this.state.currencies[this.state.toCurrency]['flag'];
-        const fromFlag = this.state.currencies[this.state.fromCurrency]['flag'];
+        const toFlag = this.flags[this.state.toCurrency];
+        const fromFlag = this.flags[this.state.fromCurrency];
+
+        const showError = this.fromAmountRef.current === null || this.isNumeric(this.fromAmountRef.current.value);
 
         return (
             <div className="converter container">
@@ -113,9 +112,10 @@ class Converter extends Component {
                         <Row className="show-grid form-group">
                             <Col xs={4} xsOffset={3}>
                                 <input type="number" className="form-control"
-                                        onChange={this.handleamountChange}
-                                        value={this.state.amount} />
-                                <p className={"error" + (this.isNumeric(this.state.amount) ? '' : ' show')}>
+                                        onChange={this.handleUpdate}
+                                        defaultValue={1}
+                                        ref={this.fromAmountRef} />
+                                <p className={"error" + (showError ? '' : ' show')}>
                                     Please input a number
                                 </p>
                             </Col>
@@ -144,7 +144,7 @@ class Converter extends Component {
                         <Row>
                             <Col xs={4} xsOffset={3}>
                                 <input type="text" readOnly  className="form-control"
-                                        value={this.state.rate * this.state.amount} />
+                                        value={this.state.targetAmount} />
                             </Col>
                             <Col xs={2}>
                                 <DropdownButton
