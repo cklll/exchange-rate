@@ -32,7 +32,6 @@ router.get('/', (req, res) => {
 
 // get all rates
 router.get('/api/rates', async (req, res) => {
-
   if (nextUpdateTimestamp >  Date.now()) {
     await getOXRData();
   }
@@ -40,26 +39,31 @@ router.get('/api/rates', async (req, res) => {
 });
 
 // get historic data
+// e.g. /api/history/currency=USD
 router.get('/api/history', async (req, res) => {  
   let currency = req.query.currency;
 
   if (currency === null || currency === undefined) {
-    res.status(400);
     return res.send({
       error: "currency not specified"
-    });
+    }, 400);
   } 
   
   currency = currency.toUpperCase();
   if (availableCurrencies.indexOf(currency) === -1) { // not found
-    res.status(404);
     return res.send({
       error: "currency not available"
-    });
+    }, 404);
   }
 
   return res.send("OK");
   
+});
+
+router.get('*', function(req, res){
+  res.send({
+    error: "route not found"
+  }, 404);
 });
 
 
