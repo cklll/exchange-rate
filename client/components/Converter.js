@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import { DropdownButton, MenuItem, Grid, Row, Col } from 'react-bootstrap';
+import History from './History';
 const fx = require('money');
 
 
@@ -10,8 +11,7 @@ class Converter extends Component {
             fromCurrency: "HKD",
             toCurrency: "USD",
             targetAmount: 0,
-            loadingCurrentRates: true,
-            loadingHistory: true
+            isLoading: true,
         };
         this.flags = {
             USD: 'us',
@@ -19,7 +19,6 @@ class Converter extends Component {
             EUR: 'eu',
             GBP: 'gb',
         }
-        this
         this.fromAmountRef = React.createRef();
         
         fx.base = "USD";
@@ -33,11 +32,11 @@ class Converter extends Component {
         fetch('http://localhost:8000/api/rates')
             .then(res => res.json())
             .then(data => {
-                console.log(data['rates']);
+                // console.log(data['rates']);
                 fx.rates = data['rates'];
                 this.handleUpdate();
                 this.setState({
-                    loadingCurrentRates: false,
+                    isLoading: false,
                 })
             });
     }
@@ -108,65 +107,71 @@ class Converter extends Component {
 
         const showError = this.fromAmountRef.current === null || this.isPositiveNumber(this.fromAmountRef.current.value);
 
-        const targetValue = (this.state.loadingCurrentRates ? 'loading...' : this.state.targetAmount);
+        const targetValue = (this.state.isLoading ? 'loading...' : this.state.targetAmount);
         return (
-            <div className="converter container">
-                <form>
-                    <Grid>
-                        <Row className="show-grid form-group">
-                            <Col xs={4} xsOffset={3}>
-                                <input type="number" className="form-control"
-                                        onChange={this.handleUpdate}
-                                        defaultValue={1}
-                                        ref={this.fromAmountRef}
-                                        min="0" />
-                                <p className={"error" + (showError ? '' : ' show')}>
-                                    Please input a positive number
-                                </p>
-                            </Col>
-                            <Col xs={2}>
-                                <DropdownButton
-                                    bsStyle='info'
-                                    title={
-                                        <span>
-                                            <img src="../assets/blank.gif" 
-                                                    className={"flag flag-"+fromFlag} alt={this.state.fromCurrency} />
-                                            {this.state.fromCurrency}
-                                        </span>
-                                    }
-                                    id='fromDropwdown'>
-                                    {fromDropdownItems}
-                                </DropdownButton>
-                            </Col>
-                        </Row>
-                        <Row>
-                            <Col xs={4} xsOffset={3} className="equal-to">
-                                <button type="button" className="btn btn-primary btn-swap"
-                                    onClick={this.swapCurrency}>&#x21C5;</button>
-                            </Col>
-                        </Row>
-                        <Row>
-                            <Col xs={4} xsOffset={3}>
-                                <input type="text" readOnly  className="form-control"
-                                        value={targetValue} />
-                            </Col>
-                            <Col xs={2}>
-                                <DropdownButton
-                                    bsStyle='info'
-                                    title={
-                                        <span>
-                                            <img src="../assets/blank.gif" 
-                                                    className={"flag flag-"+toFlag} alt={this.state.toCurrency} />
-                                            {this.state.toCurrency}
-                                        </span>
-                                    }
-                                    id='toDropwdown'>
-                                    {toDropdownItems}
-                                </DropdownButton>
-                            </Col>
-                        </Row>
-                    </Grid>
-                </form>
+            <div>
+                <div className="converter container">
+                    <form>
+                        <Grid>
+                            <Row className="show-grid form-group">
+                                <Col xs={4} xsOffset={3}>
+                                    <input type="number" className="form-control"
+                                            onChange={this.handleUpdate}
+                                            defaultValue={1}
+                                            ref={this.fromAmountRef}
+                                            min="0" />
+                                    <p className={"error" + (showError ? '' : ' show')}>
+                                        Please input a positive number
+                                    </p>
+                                </Col>
+                                <Col xs={2}>
+                                    <DropdownButton
+                                        bsStyle='info'
+                                        title={
+                                            <span>
+                                                <img src="../assets/blank.gif" 
+                                                        className={"flag flag-"+fromFlag} alt={this.state.fromCurrency} />
+                                                {this.state.fromCurrency}
+                                            </span>
+                                        }
+                                        id='fromDropwdown'>
+                                        {fromDropdownItems}
+                                    </DropdownButton>
+                                </Col>
+                            </Row>
+                            <Row>
+                                <Col xs={4} xsOffset={3} className="equal-to">
+                                    <button type="button" className="btn btn-primary btn-swap"
+                                        onClick={this.swapCurrency}>&#x21C5;</button>
+                                </Col>
+                            </Row>
+                            <Row>
+                                <Col xs={4} xsOffset={3}>
+                                    <input type="text" readOnly  className="form-control"
+                                            value={targetValue} />
+                                </Col>
+                                <Col xs={2}>
+                                    <DropdownButton
+                                        bsStyle='info'
+                                        title={
+                                            <span>
+                                                <img src="../assets/blank.gif" 
+                                                        className={"flag flag-"+toFlag} alt={this.state.toCurrency} />
+                                                {this.state.toCurrency}
+                                            </span>
+                                        }
+                                        id='toDropwdown'>
+                                        {toDropdownItems}
+                                    </DropdownButton>
+                                </Col>
+                            </Row>
+                        </Grid>
+                    </form>
+                </div>
+
+                <hr className="container" />
+                
+                <History from={this.state.fromCurrency} to={this.state.toCurrency} />
             </div>
         )
     }

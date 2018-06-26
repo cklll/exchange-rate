@@ -23,7 +23,8 @@ https://stackoverflow.com/questions/23535289/bootstrap-3-disable-navbar-collapse
 
 .converter {
     display: flex;
-    min-height: 80vh;
+    height: 60vh;
+    min-height: 400px;
     justify-content: center;
     flex-direction: column;
     text-align: left;
@@ -49,6 +50,58 @@ https://stackoverflow.com/questions/23535289/bootstrap-3-disable-navbar-collapse
 .converter input {
     height: 62px; /* 48+2+6+6 */
     font-size:28px;
+}
+
+hr {
+    border-top: 2px dotted #000;
+}
+
+.history { 
+    position: relative;
+    min-height:500px;
+}
+.history h2 {
+    text-align: center;
+}
+.history .loader {
+    display:none;
+    position: absolute;
+    top:0; bottom:0; left:0; right:0;
+    background-color: rgba(0,0,0,.2);
+}
+.history .loader.show {
+    display:block;
+}
+.history .loader-inner {
+    border: 16px solid #f3f3f3;
+    border-radius: 50%;
+    border-top: 16px solid #3498db;
+    width: 120px;
+    height: 120px;
+    -webkit-animation: spin 1s linear infinite; /* Safari */
+    animation: spin 1s linear infinite;
+    left: 50%;
+    top: 50%;
+    position: absolute;
+}
+@-webkit-keyframes spin {
+  0% { -webkit-transform: translate(-50%, -50%) rotate(0deg) }
+  100% { -webkit-transform: translate(-50%, -50%) rotate(360deg) }
+}
+
+@keyframes spin {
+  0% { transform: translate(-50%, -50%) rotate(0deg); }
+  100% { transform: translate(-50%, -50%) rotate(360deg) }
+}
+@media screen and (min-width: 992px) {
+    .history table {
+        width:auto;
+        margin: 0 auto;
+    }
+    .history table td, .history table th {
+        min-width:300px;
+        text-align: center;
+    }
 }
 
 .flag {

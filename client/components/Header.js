@@ -6,7 +6,7 @@ class Header extends Component {
             <header>
                 <nav className="navbar navbar-default">
                     <div className="container-fluid">
-                        <a className="navbar-brand" href="#">Currency Exchange Rate</a>
+                        <a className="navbar-brand" href="">Currency Exchange Rate</a>
                         <div className="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
                             <ul className="nav navbar-nav navbar-right">
                                 <li><a target="_blank" href="https://github.com/cklll/exchange-rate">GitHub</a></li>
