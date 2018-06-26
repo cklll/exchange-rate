@@ -42,6 +42,14 @@ https://stackoverflow.com/questions/23535289/bootstrap-3-disable-navbar-collapse
     margin-top: 10vh;
     margin-bottom: 10vh;
 }
+.converter .btn-swap {
+    padding: 0px 40px;
+    font-size: 48px;
+}
+.converter input {
+    height: 62px; /* 48+2+6+6 */
+    font-size:28px;
+}
 
 .flag {
     display: inline-block;

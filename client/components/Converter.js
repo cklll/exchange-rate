@@ -4,13 +4,14 @@ const fx = require('money');
 
 
 class Converter extends Component {
-
     constructor(props) {
         super(props);
         this.state = {
             fromCurrency: "HKD",
             toCurrency: "USD",
             targetAmount: 0,
+            loadingCurrentRates: true,
+            loadingHistory: true
         };
         this.flags = {
             USD: 'us',
@@ -18,36 +19,38 @@ class Converter extends Component {
             EUR: 'eu',
             GBP: 'gb',
         }
-        this.rates = {
-            EUR : 0.745101, // eg. 1 USD === 0.745101 EUR
-            GBP : 0.647710, // etc...
-            HKD : 7.781919,
-            USD : 1, 
-        }
+        this
         this.fromAmountRef = React.createRef();
-
-        this.handleUpdate = this.handleUpdate.bind(this);
-        this.handleFromCurrencyChange = this.handleFromCurrencyChange.bind(this);
-        this.handleToCurrencyChange = this.handleToCurrencyChange.bind(this);
-        this.swapCurrency = this.swapCurrency.bind(this);
         
-        fx.rates = this.rates
         fx.base = "USD";
     }
 
     componentDidMount() {
-        this.handleUpdate();
+        this.getCurrentRates();
     }
 
-    swapCurrency() {
+    getCurrentRates = () => {
+        fetch('http://localhost:8000/api/rates')
+            .then(res => res.json())
+            .then(data => {
+                console.log(data['rates']);
+                fx.rates = data['rates'];
+                this.handleUpdate();
+                this.setState({
+                    loadingCurrentRates: false,
+                })
+            });
+    }
+
+    swapCurrency = () => {
         this.setState({
             toCurrency: this.state.fromCurrency,
             fromCurrency: this.state.toCurrency,
         }, () => this.handleUpdate());
     }
 
-    handleUpdate() {
-        if (this.isNumeric(this.fromAmountRef.current.value)) {
+    handleUpdate = () => {
+        if (this.isPositiveNumber(this.fromAmountRef.current.value)) {
             const targetAmount = fx.convert(parseFloat(this.fromAmountRef.current.value), {
                 from: this.state.fromCurrency, 
                 to: this.state.toCurrency
@@ -62,24 +65,24 @@ class Converter extends Component {
         }
     }
 
-    handleFromCurrencyChange(currency) {
+    handleFromCurrencyChange = (currency) => {
         this.setState({
             fromCurrency: currency
         }, () => this.handleUpdate());
     }
-    handleToCurrencyChange(currency) {
+    handleToCurrencyChange = (currency) => {
         this.setState({
             toCurrency: currency
         }, () => this.handleUpdate());
     }
 
-    isNumeric(number) {
-        return !isNaN(parseFloat(number)) && isFinite(number);
+    isPositiveNumber = (number) => {
+        return !isNaN(parseFloat(number)) && isFinite(number) && number >= 0;
     }
 
     render() {
 
-        const fromDropdownItems = Object.keys(this.rates).map((currency, index) => {
+        const fromDropdownItems = Object.keys(this.flags).map((currency, index) => {
             const flag = this.flags[currency];
             return (
                 <MenuItem key={currency} eventKey={currency}
@@ -89,7 +92,7 @@ class Converter extends Component {
                 </MenuItem>
             )
         });
-        const toDropdownItems = Object.keys(this.rates).map((currency, index) => {
+        const toDropdownItems = Object.keys(this.flags).map((currency, index) => {
             const flag = this.flags[currency];
             return (
                 <MenuItem key={currency} eventKey={currency}
@@ -103,8 +106,9 @@ class Converter extends Component {
         const toFlag = this.flags[this.state.toCurrency];
         const fromFlag = this.flags[this.state.fromCurrency];
 
-        const showError = this.fromAmountRef.current === null || this.isNumeric(this.fromAmountRef.current.value);
+        const showError = this.fromAmountRef.current === null || this.isPositiveNumber(this.fromAmountRef.current.value);
 
+        const targetValue = (this.state.loadingCurrentRates ? 'loading...' : this.state.targetAmount);
         return (
             <div className="converter container">
                 <form>
@@ -114,9 +118,10 @@ class Converter extends Component {
                                 <input type="number" className="form-control"
                                         onChange={this.handleUpdate}
                                         defaultValue={1}
-                                        ref={this.fromAmountRef} />
+                                        ref={this.fromAmountRef}
+                                        min="0" />
                                 <p className={"error" + (showError ? '' : ' show')}>
-                                    Please input a number
+                                    Please input a positive number
                                 </p>
                             </Col>
                             <Col xs={2}>
@@ -135,16 +140,15 @@ class Converter extends Component {
                             </Col>
                         </Row>
                         <Row>
-
                             <Col xs={4} xsOffset={3} className="equal-to">
-                                <button type="button" className="btn btn-secondary"
+                                <button type="button" className="btn btn-primary btn-swap"
                                     onClick={this.swapCurrency}>&#x21C5;</button>
                             </Col>
                         </Row>
                         <Row>
                             <Col xs={4} xsOffset={3}>
                                 <input type="text" readOnly  className="form-control"
-                                        value={this.state.targetAmount} />
+                                        value={targetValue} />
                             </Col>
                             <Col xs={2}>
                                 <DropdownButton
