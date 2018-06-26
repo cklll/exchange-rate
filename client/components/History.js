@@ -6,10 +6,21 @@ class History extends Component {
         super(props);
         this.state = {
             isLoading: true,
-            rates: {},
-            from: props.from,
-            to: props.to,
+            rates: {
+                HKD: 1,
+                EUR: 1,
+                GBP: 1,
+                USD: 1,
+            },
+        };
+        fx.rates = {
+            HKD: 1,
+            EUR: 1,
+            GBP: 1,
+            USD: 1,
+
         }
+        fx.base = "USD";
     }
 
     componentDidMount() {
@@ -46,7 +57,7 @@ class History extends Component {
             dates.sort();
             let prevRate = null;
             rows = dates.map(date => {
-                fx.rates = this.state.rates[date];
+                // fx.rates = this.state.rates[date];
                 const rate = fx.convert(1, {
                     from: this.props.from, 
                     to: this.props.to
