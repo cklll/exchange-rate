@@ -42,19 +42,19 @@ class History extends Component {
             dates.sort();
             let prevRate = null;
             rows = dates.map(date => {
-                const rate = convert(
+                const rate = parseFloat(convert(
                     1,
                     this.state.rates[date][this.props.from],
                     this.state.rates[date][this.props.to],
-                );
+                )).toFixed(5);
                 let change = '-';
                 let changeClass = '';
                 if (prevRate !== null) {
                     if (rate > prevRate) {
-                        change = '⮝';
+                        change = '🡱';
                         changeClass = 'text-success';
                     } else if (rate < prevRate) {
-                        change = '⮟';
+                        change = '🡳';
                         changeClass = 'text-danger';
                     }
                 }

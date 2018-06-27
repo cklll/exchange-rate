@@ -59,7 +59,7 @@ class Converter extends Component {
                 this.state.rates[this.state.toCurrency],
             );
             this.setState({
-                targetAmount: targetAmount,
+                targetAmount: parseFloat(targetAmount).toFixed(5),
             })
         } else {
             this.setState({
@@ -118,17 +118,8 @@ class Converter extends Component {
                     <form>
                         <Grid>
                             <Row className="show-grid form-group">
-                                <Col xs={4} xsOffset={3}>
-                                    <input type="number" className="form-control"
-                                            onChange={this.handleUpdate}
-                                            defaultValue={1}
-                                            ref={this.fromAmountRef}
-                                            min="0" />
-                                    <p className={"error" + (showError ? '' : ' show')}>
-                                        Please input a positive number
-                                    </p>
-                                </Col>
-                                <Col xs={2}>
+                                <Col xs={12}>
+                                    
                                     <DropdownButton
                                         bsStyle='info'
                                         title={
@@ -141,20 +132,24 @@ class Converter extends Component {
                                         id='fromDropwdown'>
                                         {fromDropdownItems}
                                     </DropdownButton>
+                                    <input type="number" className="form-control"
+                                            onChange={this.handleUpdate}
+                                            defaultValue={1}
+                                            ref={this.fromAmountRef}
+                                            min="0" />
+                                    <p className={"error" + (showError ? '' : ' show')}>
+                                        Please input a positive number
+                                    </p>
                                 </Col>
                             </Row>
                             <Row>
-                                <Col xs={4} xsOffset={3} className="equal-to">
+                                <Col xs={12} className="equal-to">
                                     <button type="button" className="btn btn-primary btn-swap"
                                         onClick={this.swapCurrency}>&#x21C5;</button>
                                 </Col>
                             </Row>
                             <Row>
-                                <Col xs={4} xsOffset={3}>
-                                    <input type="text" readOnly  className="form-control"
-                                            value={targetValue} />
-                                </Col>
-                                <Col xs={2}>
+                                <Col xs={12}>
                                     <DropdownButton
                                         bsStyle='info'
                                         title={
@@ -167,6 +162,8 @@ class Converter extends Component {
                                         id='toDropwdown'>
                                         {toDropdownItems}
                                     </DropdownButton>
+                                    <input type="text" readOnly  className="form-control"
+                                            value={targetValue} />
                                 </Col>
                             </Row>
                         </Grid>
