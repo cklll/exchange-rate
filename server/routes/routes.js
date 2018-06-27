@@ -5,10 +5,8 @@ const mongoose = require('mongoose');
 
 const historySchema = require('../../models/RateHistory');
 const config = require('../../config/config.js');
-console.log(config);
 
 oxr.set({ app_id: config.oxr_key });
-
 let cached_rates_info = {};
 let nextUpdateTimestamp = Date.now();  // initialize next current timestamp to current time
 
