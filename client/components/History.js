@@ -48,14 +48,11 @@ class History extends Component {
                     this.state.rates[date][this.props.to],
                 )).toFixed(5);
                 let change = '-';
-                let changeClass = '';
                 if (prevRate !== null) {
                     if (rate > prevRate) {
-                        change = '🡱';
-                        changeClass = 'text-success';
+                        change = '<svg xmlns="http://www.w3.org/2000/svg" fill="green" width="24" height="24" viewBox="0 0 24 24"><path d="M12 0l8 9h-6v15h-4v-15h-6z"></path></svg>';
                     } else if (rate < prevRate) {
-                        change = '🡳';
-                        changeClass = 'text-danger';
+                        change = '<svg xmlns="http://www.w3.org/2000/svg" fill="red" width="24" height="24" viewBox="0 0 24 24"><path d="M12 24l-8-9h6v-15h4v15h6z"/></svg>';
                     }
                 }
                 prevRate = rate;
@@ -63,7 +60,7 @@ class History extends Component {
                     <tr key={date}>
                         <td>{date}</td>
                         <td>{rate}</td>
-                        <td className={changeClass}>{change}</td>
+                        <td dangerouslySetInnerHTML={{__html: change}} />
                     </tr>
                 )
             })
