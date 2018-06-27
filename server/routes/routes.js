@@ -2,12 +2,14 @@ const express = require('express');
 const router = express.Router();
 const oxr = require('open-exchange-rates');
 const mongoose = require('mongoose');
+
 const historySchema = require('../../models/RateHistory');
+const config = require('../../config.json');
 
 if (process.env.NODE_ENV !== 'production') {
   require('dotenv').load();
 }
-oxr.set({ app_id: process.env.OXR_APP_ID });
+oxr.set({ app_id: config.oxr_key });
 
 let cached_rates_info = {};
 let nextUpdateTimestamp = Date.now();  // initialize next current timestamp to current time
@@ -28,6 +30,7 @@ const getOXRData = async () => {
   
   // update every hour
   nextUpdateTimestamp = oxr.timestamp + 3600000;
+
 }
 
 const getHistoricalAsync = async (startDate, endDate, currencies) => {
@@ -50,7 +53,11 @@ const getHistoricalAsync = async (startDate, endDate, currencies) => {
       if (rates[dateString] === undefined) {
         rates[dateString] = {};
       }
-      rates[dateString][currency] = history['rateToUSD'];
+      if (history['rateToUSD'] === undefined) {
+        rates[dateString] = undefined;
+      } else {
+        rates[dateString][currency] = history['rateToUSD'];
+      }
     })
   }
 
@@ -58,22 +65,32 @@ const getHistoricalAsync = async (startDate, endDate, currencies) => {
     const dateString = startDate.toISOString().split('T')[0]; //YYYY-MM-DD 
 
     // not found in db
-    if (rates[dateString] === undefined) {
+    if (rates[dateString] === undefined || rates[dateString] === null) {
+      console.log('called api');
       const oxrHistory = require('open-exchange-rates');
-      oxrHistory.set({ app_id: process.env.OXR_APP_ID });
+      oxrHistory.set({ app_id: config.oxr_key });
       await new Promise(resolve => {
         oxrHistory.historical(dateString, () => resolve());
       });
       for (let currency of availableCurrencies) {
         const History = mongoose.model(currency, historySchema, currency);
-        const history = new History({
-          dateString: dateString,
-          dateNumber: parseInt(dateString.replace(/-/g, '')),
-          rateToUSD: oxrHistory.rates[currency]
-        });
-        history.save(function(err) {
-          if (err) { /* unique index on date may cause error, just ignore it */ }
-        });
+
+        History.findOneAndUpdate(
+          {
+            dateNumber: parseInt(dateString.replace(/-/g, ''))
+          },
+          {
+            dateString: dateString,
+            dateNumber: parseInt(dateString.replace(/-/g, '')),
+            rateToUSD: oxrHistory.rates[currency]
+          }, 
+          {
+            upsert: true
+          },
+          function(err, doc) {
+            if (err) { console.log(err) }
+          }
+        )
       }
 
       rates[dateString] = {};

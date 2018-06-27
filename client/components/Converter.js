@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { DropdownButton, MenuItem, Grid, Row, Col } from 'react-bootstrap';
 import History from './History';
-const fx = require('money');
+import fx from 'money';
 
 
 class Converter extends Component {
@@ -12,6 +12,9 @@ class Converter extends Component {
             toCurrency: "USD",
             targetAmount: 0,
             isLoading: true,
+            rates: {
+                USD:1
+            }
         };
         this.flags = {
             USD: 'us',
@@ -32,8 +35,9 @@ class Converter extends Component {
         fetch('http://localhost:8000/api/rates')
             .then(res => res.json())
             .then(data => {
-                // console.log(data['rates']);
-                fx.rates = data['rates'];
+                this.setState({
+                    rates: data['rates']
+                })
                 this.handleUpdate();
                 this.setState({
                     isLoading: false,
@@ -49,6 +53,12 @@ class Converter extends Component {
     }
 
     handleUpdate = () => {
+        // console.log('called')
+        // console.log(fx.rates)
+        // console.log(this.state.fromCurrency)
+        // console.log(this.state.toCurrency)
+        // reset rate => make sure History.js wont affect the rate
+        fx.rates = this.state.rates;
         if (this.isPositiveNumber(this.fromAmountRef.current.value)) {
             const targetAmount = fx.convert(parseFloat(this.fromAmountRef.current.value), {
                 from: this.state.fromCurrency, 

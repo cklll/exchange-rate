@@ -6,20 +6,8 @@ class History extends Component {
         super(props);
         this.state = {
             isLoading: true,
-            rates: {
-                HKD: 1,
-                EUR: 1,
-                GBP: 1,
-                USD: 1,
-            },
+            rates: {},
         };
-        fx.rates = {
-            HKD: 1,
-            EUR: 1,
-            GBP: 1,
-            USD: 1,
-
-        }
         fx.base = "USD";
     }
 
@@ -32,6 +20,7 @@ class History extends Component {
                 isLoading: true,
                 rates: {},
             })
+            this.props = nextProps;
             this.getHistory();
         }
     }
@@ -40,8 +29,9 @@ class History extends Component {
         fetch(`http://localhost:8000/api/history?from=${this.props.from}&to=${this.props.to}`)
             .then(res => res.json())
             .then(data => {
+                console.log('data:');
                 console.log(data);
-                // fx.rates = data['rates'];
+                fx.rates = data['rates'];
                 this.setState({
                     rates: data['rates'],
                     isLoading: false,
@@ -50,18 +40,18 @@ class History extends Component {
     }
 
     render() {
-        console.log(this.state.rates)
         let rows = [];
         if (true) {
             const dates = Object.keys(this.state.rates);
             dates.sort();
             let prevRate = null;
             rows = dates.map(date => {
-                // fx.rates = this.state.rates[date];
+                fx.rates = this.state.rates[date];
                 const rate = fx.convert(1, {
                     from: this.props.from, 
                     to: this.props.to
                 });
+                
                 let change = '-';
                 let changeClass = '';
                 if (prevRate !== null) {
