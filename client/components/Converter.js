@@ -114,7 +114,7 @@ class Converter extends Component {
         const targetValue = (this.state.isLoading ? 'loading...' : this.state.targetAmount);
         return (
             <div>
-                <div className="converter container">
+                <div className="converter">
                     <form>
                         <Grid>
                             <Row className="show-grid form-group">
@@ -170,7 +170,7 @@ class Converter extends Component {
                     </form>
                 </div>
 
-                <hr className="container" />
+                <hr />
                 
                 <History from={this.state.fromCurrency} to={this.state.toCurrency} />
             </div>
