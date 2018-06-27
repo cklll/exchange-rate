@@ -104,13 +104,13 @@ const getHistorical = async (startDate, endDate, currencies) => {
                 }
               )
             }
+            rates[dateString] = {};
+            for (let currency of currencies) {
+              rates[dateString][currency] = jsonData["rates"][currency];
+            }
           });
 
           
-          rates[dateString] = {};
-          for (let currency of currencies) {
-            rates[dateString][currency] = jsonData["rates"][currency];
-          }
     
           resolve();
         });
