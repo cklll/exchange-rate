@@ -35,20 +35,22 @@ https://blog.cloudboost.io/creating-your-first-mern-stack-application-b6604d12e4
 git clone https://github.com/cklll/exchange-rate.git
 cd exchange-rate
 ```
-Copy `config.example.json` to `config.development.json`, `config.production.json` and set the corresponding keys. 
+Copy `example.env` to `.env` and set the corresponding values.
 ```
 npm install
-npm start
 ```
+**Run in development mode (auto rebuild)**  
+```
+npm run start-dev
+```
+
 
 #### Test Application
 ``` TODO ```
 
 #### Production Deployment
-``` TODO ```
+For Heroku deployment, set the environemt variables as in ```.env``` before deploying.
 
-
-
-## Live Demo
-I am using a free heroku hosting so it may take a while to load for the first time!
+## [Live Demo](https://exchange-rate-ckl.herokuapp.com/)
+I am using a free heroku hosting so it may take a while to load for the first time.
 

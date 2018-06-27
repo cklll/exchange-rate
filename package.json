@@ -21,7 +21,7 @@
   },
   "scripts": {
     "webpack": "webpack",
-    "start": "node server/server.js",
+    "start": "webpack -p --progress && node server/server.js",
     "start-dev": "set NODE_ENV=development && webpack --watch | nodemon server/server.js",
     "postinstall": "npm run build",
     "build": "webpack -p --progress",

@@ -95,6 +95,9 @@ hr {
   0% { transform: translate(-50%, -50%) rotate(0deg); }
   100% { transform: translate(-50%, -50%) rotate(360deg) }
 }
+.history table td, .history table th {
+    text-align: center;
+}
 @media screen and (min-width: 992px) {
     .history table {
         width:auto;
@@ -102,7 +105,6 @@ hr {
     }
     .history table td, .history table th {
         min-width:300px;
-        text-align: center;
     }
 }
 
