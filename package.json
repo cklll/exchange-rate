@@ -24,8 +24,8 @@
   "scripts": {
     "webpack": "webpack",
     "start": "set NODE_ENV=development && webpack --watch | nodemon --exec babel-node -- bin/www",
-    "postinstall": "set NODE_ENV=production && ndoe bin/www",
-    "build": "react-scripts build",
+    "build": "webpack -p --progress",
+    "heroku-postbuild": "webpack -p --progress",
     "test": "react-scripts test --env=jsdom",
     "eject": "react-scripts eject"
   },
