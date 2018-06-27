@@ -44,8 +44,8 @@ class History extends Component {
             rows = dates.map(date => {
                 const rate = convert(
                     1,
-                    this.state.rates[date][from],
-                    this.state.rates[date][to],
+                    this.state.rates[date][this.props.from],
+                    this.state.rates[date][this.props.to],
                 );
                 let change = '-';
                 let changeClass = '';
