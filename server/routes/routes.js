@@ -4,11 +4,9 @@ const oxr = require('open-exchange-rates');
 const mongoose = require('mongoose');
 
 const historySchema = require('../../models/RateHistory');
-const config = require('../../config.json');
+const config = require('../../config/config.js');
+console.log(config);
 
-if (process.env.NODE_ENV !== 'production') {
-  require('dotenv').load();
-}
 oxr.set({ app_id: config.oxr_key });
 
 let cached_rates_info = {};

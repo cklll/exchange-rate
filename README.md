@@ -13,16 +13,16 @@ Exchange rates data fetched from [open exchange rates](https://openexchangerates
 Three-tier architecture with MERN stack.
 
 #### MongoDB
-MongoDB as a Document Store NoSQL database, is able to store complex data and provide fast data retrieval.
+Store historical data retrieved from open exchange rates API.
 
 #### ExpressJS
-``` TODO ```
+Handle routing.
 
 #### React
-Front-end JavaScript framework for single page application.
+Provide client side single page application.
 
 #### NodeJS
-Back-end JavaScript framework to provide data for client application.
+Handle API request and client page.
 
 
 
@@ -30,12 +30,12 @@ Back-end JavaScript framework to provide data for client application.
 #### Initial MERN setup (reference only)
 https://blog.cloudboost.io/creating-your-first-mern-stack-application-b6604d12e4d3
 
-#### Local Installation
+#### Installation
 ```
 git clone https://github.com/cklll/exchange-rate.git
 cd exchange-rate
 ```
-Copy `example.env` to `.env` and modify the values in the file
+Copy `config.example.json` to `config.development.json`, `config.production.json` and set the corresponding keys. 
 ```
 npm install
 npm start
@@ -46,8 +46,6 @@ npm start
 
 #### Production Deployment
 ``` TODO ```
-Set up environment variable in Heroku
-heroku config:set OXR_APP_ID=YOUR_OXR_APP_ID
 
 
 

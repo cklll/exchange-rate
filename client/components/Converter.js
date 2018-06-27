@@ -32,7 +32,7 @@ class Converter extends Component {
     }
 
     getCurrentRates = () => {
-        fetch('http://localhost:8000/api/rates')
+        fetch('/api/rates')
             .then(res => res.json())
             .then(data => {
                 this.setState({
@@ -53,10 +53,6 @@ class Converter extends Component {
     }
 
     handleUpdate = () => {
-        // console.log('called')
-        // console.log(fx.rates)
-        // console.log(this.state.fromCurrency)
-        // console.log(this.state.toCurrency)
         // reset rate => make sure History.js wont affect the rate
         fx.rates = this.state.rates;
         if (this.isPositiveNumber(this.fromAmountRef.current.value)) {

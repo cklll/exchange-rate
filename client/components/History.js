@@ -26,7 +26,7 @@ class History extends Component {
     }
 
     getHistory = () => {
-        fetch(`http://localhost:8000/api/history?from=${this.props.from}&to=${this.props.to}`)
+        fetch(`/api/history?from=${this.props.from}&to=${this.props.to}`)
             .then(res => res.json())
             .then(data => {
                 console.log('data:');
