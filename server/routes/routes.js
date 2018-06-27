@@ -19,20 +19,21 @@ const getOXRLatest = async () => {
       port: 80,
       path: `/api/latest.json?app_id=${oxrKey}`,
     }, (res) => {
+      let body = '';
       res.setEncoding('utf8');
       res.on('data', function (data) {
-        console.log('get latest rates');
-        console.log(data);
-        const jsonData = JSON.parse(data)
+        body += data;
+      });
+      res.on('end', function() {
+        const jsonData = JSON.parse(body)
         const availableRates = availableCurrencies.reduce((a, e) => (a[e] = jsonData["rates"][e], a), {});
         cached_rates_info = {
             rates: availableRates,
             base: jsonData["base"],
         };
         nextUpdateTimestamp = jsonData["timestamp"] + 3600000;
+        resolve();
       });
-
-      resolve();
     });
   })
 }
@@ -76,9 +77,13 @@ const getHistorical = async (startDate, endDate, currencies) => {
           port: 80,
           path: `/api/historical/${dateString}.json?app_id=${oxrKey}`,
         }, (res) => {
+          let body = '';
           res.setEncoding('utf8');
           res.on('data', function (data) {
-            const jsonData = JSON.parse(data)
+            body += data;
+          });
+          res.on('end', function() {
+            const jsonData = JSON.parse(body)
             for (let currency of availableCurrencies) {
               const History = mongoose.model(currency, historySchema, currency);
       
