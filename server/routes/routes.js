@@ -1,35 +1,41 @@
 const express = require('express');
 const router = express.Router();
-const oxr = require('open-exchange-rates');
 const mongoose = require('mongoose');
+const http = require('http');
 
 const historySchema = require('../../models/RateHistory');
-const config = require('../../config/config.js');
 
-oxr.set({ app_id: config.oxr_key });
+const oxrKey = process.env.OXR_APP_ID;
+
 let cached_rates_info = {};
 let nextUpdateTimestamp = Date.now();  // initialize next current timestamp to current time
 
 const availableCurrencies = ['HKD', 'USD', 'GBP', 'EUR'];
 
-const getOXRData = async () => {
+const getOXRLatest = async () => {
   await new Promise(resolve => {
-    oxr.latest(() => resolve());
-  });
+    http.get({
+      hostname: `openexchangerates.org`,
+      port: 80,
+      path: `/api/latest.json?app_id=${oxrKey}`,
+    }, (res) => {
+      res.setEncoding('utf8');
+      res.on('data', function (data) {
+        const jsonData = JSON.parse(data)
+        const availableRates = availableCurrencies.reduce((a, e) => (a[e] = jsonData["rates"][e], a), {});
+        cached_rates_info = {
+            rates: availableRates,
+            base: jsonData["base"],
+        };
+        nextUpdateTimestamp = jsonData["timestamp"] + 3600000;
+      });
 
-  // https://stackoverflow.com/questions/17781472/how-to-get-a-subset-of-a-javascript-objects-properties
-  const availableRates = availableCurrencies.reduce((a, e) => (a[e] = oxr.rates[e], a), {});
-  cached_rates_info = {
-    rates: availableRates,
-    base: oxr.base,
-  }
-  
-  // update every hour
-  nextUpdateTimestamp = oxr.timestamp + 3600000;
-
+      resolve();
+    });
+  })
 }
 
-const getHistoricalAsync = async (startDate, endDate, currencies) => {
+const getHistorical = async (startDate, endDate, currencies) => {
   
   // check db first
   const rates = {}
@@ -62,44 +68,53 @@ const getHistoricalAsync = async (startDate, endDate, currencies) => {
 
     // not found in db
     if (rates[dateString] === undefined || rates[dateString] === null) {
-      console.log('called api');
-      const oxrHistory = require('open-exchange-rates');
-      oxrHistory.set({ app_id: config.oxr_key });
       await new Promise(resolve => {
-        oxrHistory.historical(dateString, () => resolve());
-      });
-      for (let currency of availableCurrencies) {
-        const History = mongoose.model(currency, historySchema, currency);
+        http.get({
+          hostname: `openexchangerates.org`,
+          port: 80,
+          path: `/api/historical/${dateString}.json?app_id=${oxrKey}`,
+        }, (res) => {
+          res.setEncoding('utf8');
+          res.on('data', function (data) {
+            const jsonData = JSON.parse(data)
+            for (let currency of availableCurrencies) {
+              const History = mongoose.model(currency, historySchema, currency);
+      
+              History.findOneAndUpdate(
+                {
+                  dateNumber: parseInt(dateString.replace(/-/g, ''))
+                },
+                {
+                  dateString: dateString,
+                  dateNumber: parseInt(dateString.replace(/-/g, '')),
+                  rateToUSD: jsonData["rates"][currency]
+                }, 
+                {
+                  upsert: true
+                },
+                function(err, doc) {
+                  if (err) { console.log(err) }
+                }
+              )
+            }
+          });
 
-        History.findOneAndUpdate(
-          {
-            dateNumber: parseInt(dateString.replace(/-/g, ''))
-          },
-          {
-            dateString: dateString,
-            dateNumber: parseInt(dateString.replace(/-/g, '')),
-            rateToUSD: oxrHistory.rates[currency]
-          }, 
-          {
-            upsert: true
-          },
-          function(err, doc) {
-            if (err) { console.log(err) }
+          
+          rates[dateString] = {};
+          for (let currency of currencies) {
+            rates[dateString][currency] = jsonData["rates"][currency];
           }
-        )
-      }
-
-      rates[dateString] = {};
-      for (let currency of currencies) {
-        rates[dateString][currency] = oxrHistory.rates[currency];
-      }
+    
+          resolve();
+        });
+      })
     }
     startDate.setDate(startDate.getDate() + 1);
   }
   return rates;
 }
 
-getOXRData();
+getOXRLatest();
 
 router.get('/', (req, res) => {
   res.render('index')
@@ -109,7 +124,7 @@ router.get('/', (req, res) => {
 router.get('/api/rates', async (req, res) => {
   if (nextUpdateTimestamp >  Date.now() || 
       (Object.keys(cached_rates_info).length === 0 && cached_rates_info.constructor === Object)) {
-    await getOXRData();
+    await getOXRLatest();
   }
   res.send(cached_rates_info);  
 });
@@ -140,7 +155,7 @@ router.get('/api/history', async (req, res) => {
   endDate.setDate(startDate.getDate() - 1);
   startDate.setDate(startDate.getDate() - 30);
   
-  const rates = await getHistoricalAsync(new Date(startDate), new Date(endDate), [from, to])
+  const rates = await getHistorical(new Date(startDate), new Date(endDate), [from, to])
 
   return res.send({
     rates: rates,

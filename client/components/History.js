@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-const fx = require('money');
+import { convert } from '../utils/RateConverter';
 
 class History extends Component {
     constructor(props) {
@@ -8,7 +8,6 @@ class History extends Component {
             isLoading: true,
             rates: {},
         };
-        fx.base = "USD";
     }
 
     componentDidMount() {
@@ -29,9 +28,6 @@ class History extends Component {
         fetch(`/api/history?from=${this.props.from}&to=${this.props.to}`)
             .then(res => res.json())
             .then(data => {
-                console.log('data:');
-                console.log(data);
-                fx.rates = data['rates'];
                 this.setState({
                     rates: data['rates'],
                     isLoading: false,
@@ -46,12 +42,11 @@ class History extends Component {
             dates.sort();
             let prevRate = null;
             rows = dates.map(date => {
-                fx.rates = this.state.rates[date];
-                const rate = fx.convert(1, {
-                    from: this.props.from, 
-                    to: this.props.to
-                });
-                
+                const rate = convert(
+                    1,
+                    this.state.rates[date][from],
+                    this.state.rates[date][to],
+                );
                 let change = '-';
                 let changeClass = '';
                 if (prevRate !== null) {

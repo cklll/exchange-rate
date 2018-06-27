@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { DropdownButton, MenuItem, Grid, Row, Col } from 'react-bootstrap';
 import History from './History';
-import fx from 'money';
+import { convert } from '../utils/RateConverter';
 
 
 class Converter extends Component {
@@ -24,7 +24,6 @@ class Converter extends Component {
         }
         this.fromAmountRef = React.createRef();
         
-        fx.base = "USD";
     }
 
     componentDidMount() {
@@ -53,13 +52,12 @@ class Converter extends Component {
     }
 
     handleUpdate = () => {
-        // reset rate => make sure History.js wont affect the rate
-        fx.rates = this.state.rates;
         if (this.isPositiveNumber(this.fromAmountRef.current.value)) {
-            const targetAmount = fx.convert(parseFloat(this.fromAmountRef.current.value), {
-                from: this.state.fromCurrency, 
-                to: this.state.toCurrency
-            });
+            const targetAmount = convert(
+                parseFloat(this.fromAmountRef.current.value),
+                this.state.rates[this.state.fromCurrency],
+                this.state.rates[this.state.toCurrency],
+            );
             this.setState({
                 targetAmount: targetAmount,
             })
