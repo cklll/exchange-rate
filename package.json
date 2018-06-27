@@ -21,9 +21,9 @@
   },
   "scripts": {
     "webpack": "webpack",
-    "start": "set NODE_ENV=development && webpack --watch | nodemon --exec babel-node -- bin/www",
+    "start": "node server/server.js",
+    "start-dev": "set NODE_ENV=development && webpack --watch | nodemon server/server.js",
     "build": "webpack -p --progress",
-    "heroku-postbuild": "webpack -p --progress",
     "test": "react-scripts test --env=jsdom",
     "eject": "react-scripts eject"
   },

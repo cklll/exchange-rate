@@ -21,6 +21,8 @@ const getOXRLatest = async () => {
     }, (res) => {
       res.setEncoding('utf8');
       res.on('data', function (data) {
+        console.log('get latest rates');
+        console.log(data);
         const jsonData = JSON.parse(data)
         const availableRates = availableCurrencies.reduce((a, e) => (a[e] = jsonData["rates"][e], a), {});
         cached_rates_info = {
