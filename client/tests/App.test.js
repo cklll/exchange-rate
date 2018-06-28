@@ -3,6 +3,10 @@ import React from 'react';
 import App from '../components/App';
 import renderer from 'react-test-renderer';
 
+process.on('unhandledRejection', (reason) => {
+	console.log('REJECTION', reason)
+})
+
 global.fetch = jest.fn().mockImplementation((url) => {
     var p = new Promise((resolve, reject) => {
       resolve({
@@ -155,10 +159,22 @@ global.fetch = jest.fn().mockImplementation((url) => {
     return p;
 });
 
+function createNodeMock(element) {
+  if (element.type === 'input') {
+    // This is your fake DOM node for <p>.
+    // Feel free to add any stub methods, e.g. focus() or any
+    // other methods necessary to prevent crashes in your components.
+    return {};
+  }
+  // You can return any object from this method for any type of DOM component.
+  // React will use it as a ref instead of a DOM node when snapshot testing.
+  return null;
+}
 
 test('App.js', () => {
+  const options = {createNodeMock}
   const component = renderer.create(
-    <App />,
+    <App />, options
   );
   let tree = component.toJSON();
   expect(tree).toMatchSnapshot();
