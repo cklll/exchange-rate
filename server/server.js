@@ -20,6 +20,8 @@ app.set('view engine', 'ejs');
 app.set('views', path.join(__dirname, '../client'));
 app.use(express.static(path.join(__dirname, '../client')));
 app.use('/', router);
-app.listen(port, function() {
+const server = app.listen(port, function() {
  console.log('running at port ' + port);
 });
+
+module.exports = server;

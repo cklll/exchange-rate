@@ -173,9 +173,9 @@ router.get('/api/history', async (req, res) => {
 
 
 router.get('*', function(req, res){
-  res.send({
+  res.status(404).send({
     error: "route not found"
-  }, 404);
+  });
 });
 
 
