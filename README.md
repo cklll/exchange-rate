@@ -44,9 +44,10 @@ npm install
 npm run start-dev
 ```
 
-
 #### Test Application
-``` TODO ```
+``` 
+npm run test-server
+```
 
 #### Production Deployment
 For Heroku deployment, set the environemt variables as in ```.env``` before deploying.
