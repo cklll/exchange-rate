@@ -44,9 +44,11 @@ npm install
 npm run start-dev
 ```
 
-
 #### Test Application
-``` TODO ```
+This will run in development environment and use data from development database.
+``` 
+npm run test-server
+```
 
 #### Production Deployment
 For Heroku deployment, set the environemt variables as in ```.env``` before deploying.
