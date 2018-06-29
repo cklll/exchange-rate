@@ -23,3 +23,4 @@ yarn-error.log*
 /client/bundle.js
 
 .env
+jest

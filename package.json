@@ -3,15 +3,22 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
+    "@babel/core": "^7.0.0-beta.51",
     "axios": "^0.18.0",
     "babel-cli": "^6.26.0",
+    "babel-core": "^6.26.3",
+    "babel-jest": "^23.2.0",
+    "babel-preset-env": "^1.7.0",
     "babel-preset-es2015": "^6.24.1",
+    "babel-preset-react": "^6.24.1",
     "body-parser": "^1.18.3",
     "chai": "^4.1.2",
     "chai-http": "^4.0.0",
     "ejs": "^2.6.1",
     "express": "^4.16.3",
     "http-agent": "^0.1.2",
+    "jest": "^23.2.0",
+    "jest-fetch-mock": "^1.6.5",
     "mocha": "^5.2.0",
     "mongoose": "^5.1.6",
     "nodemon": "^1.17.5",
@@ -20,7 +27,9 @@
     "react-dom": "^16.4.1",
     "react-modal": "^3.4.5",
     "react-router-dom": "^4.3.1",
-    "react-scripts": "1.1.4"
+    "react-scripts": "1.1.4",
+    "react-test-renderer": "^16.4.1",
+    "regenerator-runtime": "^0.12.0"
   },
   "scripts": {
     "webpack": "webpack",
@@ -28,12 +37,17 @@
     "start-dev": "set NODE_ENV=development && webpack --watch | nodemon server/server.js",
     "postinstall": "npm run build",
     "build": "webpack -p --progress",
-    "test": "react-scripts test --env=jsdom",
-    "test-server": "mocha --timeout 10000 --exit",
-    "eject": "react-scripts eject"
+    "test": "mocha --timeout 10000 --exit"
   },
   "devDependencies": {
     "babel-preset-stage-0": "^6.24.1",
     "file-loader": "^1.1.11"
+  },
+  "jest": {
+    "moduleNameMapper": {
+      "\\.(css|less|sass|scss)$": "<rootDir>/client/__mocks__/styleMock.js",
+      "\\.(gif|ttf|eot|svg)$": "<rootDir>/client/__mocks__/fileMock.js"
+    },
+    "verbose": false
   }
 }

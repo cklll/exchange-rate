@@ -47,7 +47,7 @@ npm run start-dev
 #### Test Application
 This will run in development environment and use data from development database.
 ``` 
-npm run test-server
+npm run test
 ```
 
 #### Production Deployment

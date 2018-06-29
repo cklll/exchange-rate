@@ -5,6 +5,7 @@ import { convert } from '../utils/RateConverter';
 
 
 class Converter extends Component {
+    
     constructor(props) {
         super(props);
         this.state = {
@@ -53,6 +54,8 @@ class Converter extends Component {
 
     handleUpdate = () => {
         if (this.isPositiveNumber(this.fromAmountRef.current.value)) {
+            console.log("amount")
+            console.log(targetAmount)
             const targetAmount = convert(
                 parseFloat(this.fromAmountRef.current.value),
                 this.state.rates[this.state.fromCurrency],
