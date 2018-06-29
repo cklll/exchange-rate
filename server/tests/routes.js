@@ -74,10 +74,36 @@ describe('All routes', () => {
                             res.should.have.status(200);
                             
                             res.body.should.have.property('rates')
-                            Object.keys(res.body.rates).should.have.length(32);
+                            Object.keys(res.body.rates).should.have.length(30);
                             Object.keys(res.body.rates).forEach(function(key) {
                                 res.body.rates.should.have.property(key);
                                 res.body.rates[key].should.have.property('HKD')
+                                    .that.to.be.a('number');
+                                res.body.rates[key].should.have.property('GBP')
+                                    .that.to.be.a('number');
+                            });
+
+                            res.body.should.have.property('base').eql('USD');
+
+                            done();
+                        });
+            });
+        });
+
+        
+
+    describe('/api/history?from=EUR&to=GBP', () => {
+        it('Get EUR & GBP history', (done) => {
+                chai.request(server)
+                        .get('/api/history?from=EUR&to=GBP')
+                        .end((err, res) => {
+                            res.should.have.status(200);
+                            
+                            res.body.should.have.property('rates')
+                            Object.keys(res.body.rates).should.have.length(30);
+                            Object.keys(res.body.rates).forEach(function(key) {
+                                res.body.rates.should.have.property(key);
+                                res.body.rates[key].should.have.property('EUR')
                                     .that.to.be.a('number');
                                 res.body.rates[key].should.have.property('GBP')
                                     .that.to.be.a('number');

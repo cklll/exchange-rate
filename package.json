@@ -37,10 +37,7 @@
     "start-dev": "set NODE_ENV=development && webpack --watch | nodemon server/server.js",
     "postinstall": "npm run build",
     "build": "webpack -p --progress",
-    "test": "react-scripts test --env=jsdom",
-    "test-server": "mocha --timeout 10000 --exit",
-    "test-client": "jest --forceExit",
-    "eject": "react-scripts eject"
+    "test": "mocha --timeout 10000 --exit"
   },
   "devDependencies": {
     "babel-preset-stage-0": "^6.24.1",
@@ -51,6 +48,6 @@
       "\\.(css|less|sass|scss)$": "<rootDir>/client/__mocks__/styleMock.js",
       "\\.(gif|ttf|eot|svg)$": "<rootDir>/client/__mocks__/fileMock.js"
     },
-    "verbose":false
+    "verbose": false
   }
 }

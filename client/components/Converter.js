@@ -7,7 +7,6 @@ import { convert } from '../utils/RateConverter';
 class Converter extends Component {
     
     constructor(props) {
-        console.log('hi')
         super(props);
         this.state = {
             fromCurrency: "HKD",
@@ -54,8 +53,6 @@ class Converter extends Component {
     }
 
     handleUpdate = () => {
-        console.log('hi2')
-        console.log(this.fromAmountRef.current)
         if (this.isPositiveNumber(this.fromAmountRef.current.value)) {
             console.log("amount")
             console.log(targetAmount)
