@@ -50,9 +50,15 @@ This will run in development environment and use data from development database.
 npm run test
 ```
 
+**The test only covers the server side and client application is not tested. I am still figuring out how to use library like jest to test automatically**
+
 #### Production Deployment
 For Heroku deployment, set the environemt variables as in ```.env``` before deploying.
 
 ## [Live Demo](https://exchange-rate-ckl.herokuapp.com/)
 I am using a free heroku hosting so it may take a while to load for the first time.
 
+#### [My Profile Website](https://www.chankinlong.com/)
+
+#### Other project
+[A simple shopping web application that I built recently to learn Angular](https://github.com/cklll/shopping-webapp)
