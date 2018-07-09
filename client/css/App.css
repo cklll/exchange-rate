@@ -28,6 +28,7 @@ https://stackoverflow.com/questions/23535289/bootstrap-3-disable-navbar-collapse
     font-style: italic;
     opacity: 0;
     position: absolute;
+    width: 100%;
 }
 .converter .error.show {
     opacity: 1;

@@ -66,7 +66,7 @@ class History extends Component {
             })
         }
         return (
-            <div className="history container">
+            <div className={"history container " + this.props.from + "-to-" + this.props.to}>
                 <h2>History</h2>
                 <div className={"loader" + (this.state.isLoading ? " show" : "")}>
                     <div className="loader-inner"></div>

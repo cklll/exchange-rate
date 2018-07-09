@@ -54,8 +54,6 @@ class Converter extends Component {
 
     handleUpdate = () => {
         if (this.isPositiveNumber(this.fromAmountRef.current.value)) {
-            console.log("amount")
-            console.log(targetAmount)
             const targetAmount = convert(
                 parseFloat(this.fromAmountRef.current.value),
                 this.state.rates[this.state.fromCurrency],
@@ -92,6 +90,7 @@ class Converter extends Component {
             const flag = this.flags[currency];
             return (
                 <MenuItem key={currency} eventKey={currency}
+                    className={"from-" + currency}
                     onSelect={this.handleFromCurrencyChange}>
                     <img src="../assets/blank.gif" className={"flag flag-"+flag} alt={currency} />
                     {currency}
@@ -102,6 +101,7 @@ class Converter extends Component {
             const flag = this.flags[currency];
             return (
                 <MenuItem key={currency} eventKey={currency}
+                className={"to-" + currency}
                 onSelect={this.handleToCurrencyChange}>
                     <img src="../assets/blank.gif" className={"flag flag-"+flag} alt={currency} />
                     {currency}
@@ -129,7 +129,7 @@ class Converter extends Component {
                                             <span>
                                                 <img src="../assets/blank.gif" 
                                                         className={"flag flag-"+fromFlag} alt={this.state.fromCurrency} />
-                                                {this.state.fromCurrency}
+                                                <span>{this.state.fromCurrency}</span>
                                             </span>
                                         }
                                         id='fromDropwdown'>
@@ -159,7 +159,7 @@ class Converter extends Component {
                                             <span>
                                                 <img src="../assets/blank.gif" 
                                                         className={"flag flag-"+toFlag} alt={this.state.toCurrency} />
-                                                {this.state.toCurrency}
+                                                <span>{this.state.toCurrency}</span>
                                             </span>
                                         }
                                         id='toDropwdown'>

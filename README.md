@@ -24,6 +24,8 @@ Provide client side single page application.
 #### NodeJS
 Handle API request and client page.
 
+#### Selenium & Mocha
+Automate Provide testing features.
 
 
 ## Setup
@@ -46,11 +48,21 @@ npm run start-dev
 
 #### Test Application
 This will run in development environment and use data from development database.
+
+**Test server response**
+```
+npm run test-server
+```
+**End-to-end test**
+```
+npm run test-end-to-end
+```
+**Run both server and end-to-end tests**
 ``` 
 npm run test
 ```
+**End to end testing uses Selenium and requires Firefox webdriver. The driver is avaiable [here](https://www.seleniumhq.org/download/)**
 
-**The test only covers the server side and client application is not tested. I am still figuring out how to use library like jest to test automatically**
 
 #### Production Deployment
 For Heroku deployment, set the environemt variables as in ```.env``` before deploying.
