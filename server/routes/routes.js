@@ -1,7 +1,7 @@
 const express = require('express');
 const router = express.Router();
-const getHistorical = require('../utils/FetchRate').getHistorical;
-const getOXRLatest = require('../utils/FetchRate').getOXRLatest;
+const getHistorical = require('../utils/fetch-rates').getHistorical;
+const getOXRLatest = require('../utils/fetch-rates').getOXRLatest;
 
 let cached_rates_info = {};
 let nextUpdateTimestamp = Date.now();  // initialize next current timestamp to current time

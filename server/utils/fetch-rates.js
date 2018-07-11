@@ -1,6 +1,6 @@
 
 const http = require('http');
-const historySchema = require('../../models/RateHistory');
+const historySchema = require('../models/history-schema');
 const oxrKey = process.env.OXR_APP_ID;
 const mongoose = require('mongoose');
 

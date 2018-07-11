@@ -1,15 +1,15 @@
 import React, { Component } from 'react';
 
-import '../css/App.css';
-import Header from './Header';
-import Converter from './Converter';
+import '../css/app.css';
+import Header from './header';
+import Converter from './converter';
 
 class App extends Component {
     render() {
         return (
-            <div className="App">
+            <div className="app">
                 <Header />
-                <div className="MainContainer">
+                <div className="main-container">
                     <Converter />
                 </div>
             </div>

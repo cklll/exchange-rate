@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { convert } from '../utils/RateConverter';
+import { convert } from '../utils/rate-converter';
 
 class History extends Component {
     constructor(props) {

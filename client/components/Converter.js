@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { DropdownButton, MenuItem, Grid, Row, Col } from 'react-bootstrap';
-import History from './History';
-import { convert } from '../utils/RateConverter';
+import History from './history';
+import { convert } from '../utils/rate-converter';
 
 
 class Converter extends Component {
