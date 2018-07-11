@@ -5,7 +5,7 @@ import { convert } from '../utils/RateConverter';
 
 
 class Converter extends Component {
-    
+
     constructor(props) {
         super(props);
         this.state = {
@@ -14,7 +14,7 @@ class Converter extends Component {
             targetAmount: 0,
             isLoading: true,
             rates: {
-                USD:1
+                USD: 1
             }
         };
         this.flags = {
@@ -24,7 +24,7 @@ class Converter extends Component {
             GBP: 'gb',
         }
         this.fromAmountRef = React.createRef();
-        
+
     }
 
     componentDidMount() {
@@ -92,7 +92,7 @@ class Converter extends Component {
                 <MenuItem key={currency} eventKey={currency}
                     className={"from-" + currency}
                     onSelect={this.handleFromCurrencyChange}>
-                    <img src="../assets/blank.gif" className={"flag flag-"+flag} alt={currency} />
+                    <img src="../assets/blank.gif" className={"flag flag-" + flag} alt={currency} />
                     {currency}
                 </MenuItem>
             )
@@ -101,9 +101,9 @@ class Converter extends Component {
             const flag = this.flags[currency];
             return (
                 <MenuItem key={currency} eventKey={currency}
-                className={"to-" + currency}
-                onSelect={this.handleToCurrencyChange}>
-                    <img src="../assets/blank.gif" className={"flag flag-"+flag} alt={currency} />
+                    className={"to-" + currency}
+                    onSelect={this.handleToCurrencyChange}>
+                    <img src="../assets/blank.gif" className={"flag flag-" + flag} alt={currency} />
                     {currency}
                 </MenuItem>
             )
@@ -122,13 +122,13 @@ class Converter extends Component {
                         <Grid>
                             <Row className="show-grid form-group">
                                 <Col xs={12}>
-                                    
+
                                     <DropdownButton
                                         bsStyle='info'
                                         title={
                                             <span>
-                                                <img src="../assets/blank.gif" 
-                                                        className={"flag flag-"+fromFlag} alt={this.state.fromCurrency} />
+                                                <img src="../assets/blank.gif"
+                                                    className={"flag flag-" + fromFlag} alt={this.state.fromCurrency} />
                                                 <span>{this.state.fromCurrency}</span>
                                             </span>
                                         }
@@ -136,10 +136,10 @@ class Converter extends Component {
                                         {fromDropdownItems}
                                     </DropdownButton>
                                     <input type="number" className="form-control"
-                                            onChange={this.handleUpdate}
-                                            defaultValue={1}
-                                            ref={this.fromAmountRef}
-                                            min="0" />
+                                        onChange={this.handleUpdate}
+                                        defaultValue={1}
+                                        ref={this.fromAmountRef}
+                                        min="0" />
                                     <p className={"error" + (showError ? '' : ' show')}>
                                         Please input a positive number
                                     </p>
@@ -157,16 +157,16 @@ class Converter extends Component {
                                         bsStyle='info'
                                         title={
                                             <span>
-                                                <img src="../assets/blank.gif" 
-                                                        className={"flag flag-"+toFlag} alt={this.state.toCurrency} />
+                                                <img src="../assets/blank.gif"
+                                                    className={"flag flag-" + toFlag} alt={this.state.toCurrency} />
                                                 <span>{this.state.toCurrency}</span>
                                             </span>
                                         }
                                         id='toDropwdown'>
                                         {toDropdownItems}
                                     </DropdownButton>
-                                    <input type="text" readOnly  className="form-control"
-                                            value={targetValue} />
+                                    <input type="text" readOnly className="form-control"
+                                        value={targetValue} />
                                 </Col>
                             </Row>
                         </Grid>
@@ -174,7 +174,7 @@ class Converter extends Component {
                 </div>
 
                 <hr />
-                
+
                 <History from={this.state.fromCurrency} to={this.state.toCurrency} />
             </div>
         )

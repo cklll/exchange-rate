@@ -60,7 +60,7 @@ class History extends Component {
                     <tr key={date}>
                         <td>{date}</td>
                         <td>{rate}</td>
-                        <td dangerouslySetInnerHTML={{__html: change}} />
+                        <td dangerouslySetInnerHTML={{ __html: change }} />
                     </tr>
                 )
             })
@@ -74,9 +74,9 @@ class History extends Component {
                 <table className="table">
                     <thead>
                         <tr>
-                        <th>Date (YYYY-MM-DD) </th>
-                        <th>Rate (1 {this.props.from} to {this.props.to}) </th>
-                        <th></th>
+                            <th>Date (YYYY-MM-DD) </th>
+                            <th>Rate (1 {this.props.from} to {this.props.to}) </th>
+                            <th></th>
                         </tr>
                     </thead>
                     <tbody>

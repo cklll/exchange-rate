@@ -14,14 +14,14 @@ const mongoose = require('mongoose');
 
 mongoose.connect(process.env.MONGODB_CONNECTION_STRING);
 
-const port =  process.env.PORT || 8000;
+const port = process.env.PORT || 8000;
 
 app.set('view engine', 'ejs');
 app.set('views', path.join(__dirname, '../client'));
 app.use(express.static(path.join(__dirname, '../client')));
 app.use('/', router);
-const server = app.listen(port, function() {
- console.log('running at port ' + port);
+const server = app.listen(port, function () {
+    console.log('running at port ' + port);
 });
 
 module.exports = server;

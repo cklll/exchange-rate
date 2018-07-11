@@ -7,7 +7,7 @@ const mongoose = require('mongoose');
 if (process.env.NODE_ENV === 'development') {
     mongoose.set('debug', true);
 }
-  
+
 const availableCurrencies = ['HKD', 'USD', 'GBP', 'EUR'];
 
 const getHistorical = async (startDate, endDate, currencies) => {
