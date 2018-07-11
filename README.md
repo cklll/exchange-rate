@@ -55,13 +55,13 @@ npm run test-server
 ```
 **End-to-end test**
 ```
-npm run test-end-to-end
+npm run test-e2e
 ```
 **Run both server and end-to-end tests**
 ``` 
 npm run test
 ```
-**End to end testing uses Selenium and requires Firefox webdriver. The driver is available [here](https://www.seleniumhq.org/download/)**
+For end to end testing, Firefox is used as webdriver. Refer to [this](https://www.npmjs.com/package/selenium-webdriver) for installation information.
 
 
 #### Production Deployment

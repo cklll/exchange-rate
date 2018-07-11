@@ -7,10 +7,13 @@ const http = require('http');
 
 const port = process.env.PORT || 8000;
 
+const firefox = require('selenium-webdriver/firefox');
+const binary = new firefox.Binary();
+binary.addArguments("-headless");
 const driver = new webdriver.Builder()
     .forBrowser('firefox')
+    .setFirefoxOptions(new firefox.Options().setBinary(binary))
     .build();
-
 let rates;
 let history;
 describe('change default to currency (USD) to EUR', () => {

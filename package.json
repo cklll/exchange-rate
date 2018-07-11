@@ -30,7 +30,7 @@
     "react-scripts": "1.1.4",
     "react-test-renderer": "^16.4.1",
     "regenerator-runtime": "^0.12.0",
-    "selenium-webdriver": "^4.0.0-alpha.1"
+    "selenium-webdriver": "^3.6.0"
   },
   "scripts": {
     "webpack": "webpack",
@@ -38,9 +38,9 @@
     "start-dev": "set NODE_ENV=development && webpack --watch | nodemon server/server.js",
     "postinstall": "npm run build",
     "build": "webpack -p --progress",
-    "test": "npm run test-server && npm run test-end-to-end",
+    "test": "npm run test-server && npm run test-e2e",
     "test-server": "mocha --timeout 30000 --exit \"./tests/server/*.js\"",
-    "test-end-to-end": "mocha -r \"./tests/init.js\" --timeout 30000 --exit \"./tests/e2e/*.js\""
+    "test-e2e": "mocha -r \"./tests/init.js\" --timeout 30000 --exit \"./tests/e2e/*.js\""
   },
   "devDependencies": {
     "babel-preset-stage-0": "^6.24.1",

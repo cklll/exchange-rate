@@ -1,15 +1,20 @@
-const webdriver = require('selenium-webdriver');
-const By = webdriver.By;
-const until = webdriver.until;
-const chai = require('chai');
-const expect = chai.expect;
+const webdriver = require('selenium-webdriver'),
+    By = webdriver.By,
+    until = webdriver.until;
+    
+const chai = require('chai'),
+        expect = chai.expect;
+        
 const http = require('http');
-
 const port = process.env.PORT || 8000;
-
+const firefox = require('selenium-webdriver/firefox');
+const binary = new firefox.Binary();
+binary.addArguments("-headless");
 const driver = new webdriver.Builder()
     .forBrowser('firefox')
+    .setFirefoxOptions(new firefox.Options().setBinary(binary))
     .build();
+
 
 let rates;
 let history;
