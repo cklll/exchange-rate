@@ -61,7 +61,7 @@ npm run test-end-to-end
 ``` 
 npm run test
 ```
-**End to end testing uses Selenium and requires Firefox webdriver. The driver is avaiable [here](https://www.seleniumhq.org/download/)**
+**End to end testing uses Selenium and requires Firefox webdriver. The driver is available [here](https://www.seleniumhq.org/download/)**
 
 
 #### Production Deployment
